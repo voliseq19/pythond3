@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>D3</title>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+</head>
+<body>
+<h1>My Graph</h1>
+<button style="display: block; float:left; background-color: blue; color:white;" disabled>WIND</button>
+<button style="display: block; background-color:red; color:white;" disabled>TEMP
+</button>
+	<script>
+
+	d3.json("d3Data.json", function(data){
+		console.log(data.length);
+		for(var i = 0; i < data.length; i++)
+		{
+			data[i]["temps"] = parseInt(data[i]["temps"]);
+			data[i]["wind"] = parseInt(data[i]["wind"]);
+			console.log(typeof(data[i]["temps"]));
+		} 
+		var canvas = d3.select("body").append("svg")
+		.attr("width", 500)
+		.attr("height", 500)
+
+		canvas.selectAll("rect.temps")
+		.data(data)
+		.enter()
+			.append("rect")
+			.attr("height", function(d){return (d.temps) * 50;})
+			.attr("width", 10)
+			.attr("x", function(d, i){return i*50;})
+			.attr("y", function(d){return 500 - (d.temps) * 50;})
+			.attr("fill", "red");
+
+			canvas.selectAll("rect.wind")
+		.data(data)
+		.enter()
+			.append("rect")
+			.attr("height", function(d){return (d.wind) * 50;})
+			.attr("width", 10)
+			.attr("x", function(d, i){return i*50 + 10;})
+			.attr("y", function(d){return 500 - (d.wind) * 50;})
+			.attr("fill", "blue");	
+	})
+	</script>
+
+</body>
+</html>
